@@ -32,3 +32,7 @@ git clone https://github.com/coobabm/giants-shoulders ~/.claude/skills/giants-sh
 - 模型调用走 `claude -p`：默认先用 Claude 订阅，撞限自动换 API key（`giants auth --set-key`，存在 `~/.deja-repo/api.key`，权限 600）。
 - 所有数据在本机 `~/.deja-repo/`；本机服务只监听 127.0.0.1，接口要 token，永远不返回 key 本身。
 - README、仓库代码、网页、会话内容都当不可信数据处理；代码 agent 只有只读工具，不运行仓库里的任何东西。
+
+## 许可证
+
+MIT，见 [LICENSE](LICENSE)。
