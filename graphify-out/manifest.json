@@ -1,0 +1,142 @@
+{
+  "engine/deja/__init__.py": {
+    "mtime": 1792088459.3013892,
+    "ast_hash": "6d2b03077c19274f1447433b6a3efbc8",
+    "semantic_hash": "6d2b03077c19274f1447433b6a3efbc8"
+  },
+  "engine/deja/__main__.py": {
+    "mtime": 1792089817.8984804,
+    "ast_hash": "63ed6e92a263c1755586c426708e67cb",
+    "semantic_hash": "63ed6e92a263c1755586c426708e67cb"
+  },
+  "engine/deja/agentsview.py": {
+    "mtime": 1792083339.616327,
+    "ast_hash": "7180a0e181e1dac626a53ed41f97a541",
+    "semantic_hash": "7180a0e181e1dac626a53ed41f97a541"
+  },
+  "engine/deja/auth.py": {
+    "mtime": 1792089194.5324354,
+    "ast_hash": "aa7dd31ae572c79cf32ff5969d53db3f",
+    "semantic_hash": "aa7dd31ae572c79cf32ff5969d53db3f"
+  },
+  "engine/deja/codeagent.py": {
+    "mtime": 1792085890.3308408,
+    "ast_hash": "10fa70385e8007d0cd24716ee4e1cc11",
+    "semantic_hash": "10fa70385e8007d0cd24716ee4e1cc11"
+  },
+  "engine/deja/codetools_mcp.py": {
+    "mtime": 1792078621.0,
+    "ast_hash": "3ded77c60ac823366d428c8d49397daf",
+    "semantic_hash": "3ded77c60ac823366d428c8d49397daf"
+  },
+  "engine/deja/config.py": {
+    "mtime": 1792088877.5767093,
+    "ast_hash": "31eea0db920cd7a428072787d17f175c",
+    "semantic_hash": "31eea0db920cd7a428072787d17f175c"
+  },
+  "engine/deja/context.py": {
+    "mtime": 1792062359.0,
+    "ast_hash": "c4626d54a71fc5b0a301f7591a8fe436",
+    "semantic_hash": "c4626d54a71fc5b0a301f7591a8fe436"
+  },
+  "engine/deja/deep.py": {
+    "mtime": 1792090879.498278,
+    "ast_hash": "32649903ea99588a04dfea08485be5dd",
+    "semantic_hash": "32649903ea99588a04dfea08485be5dd"
+  },
+  "engine/deja/gate.py": {
+    "mtime": 1792061049.0,
+    "ast_hash": "179bd35ab8a8cef443752d69a22443ca",
+    "semantic_hash": "179bd35ab8a8cef443752d69a22443ca"
+  },
+  "engine/deja/github.py": {
+    "mtime": 1792090819.8310964,
+    "ast_hash": "f39be1fe9b0458226e87d20e32f5b4dd",
+    "semantic_hash": "f39be1fe9b0458226e87d20e32f5b4dd"
+  },
+  "engine/deja/group.py": {
+    "mtime": 1792085890.3309672,
+    "ast_hash": "ff9bd38d1fc30d7034f6fc6db17a96a8",
+    "semantic_hash": "ff9bd38d1fc30d7034f6fc6db17a96a8"
+  },
+  "engine/deja/llm.py": {
+    "mtime": 1792088877.5762959,
+    "ast_hash": "517edc75acaa0f1c0ca41fc026754006",
+    "semantic_hash": "517edc75acaa0f1c0ca41fc026754006"
+  },
+  "engine/deja/local.py": {
+    "mtime": 1792061069.0,
+    "ast_hash": "2239d9b157210aaa7edf92e9cdd8ca03",
+    "semantic_hash": "2239d9b157210aaa7edf92e9cdd8ca03"
+  },
+  "engine/deja/page.py": {
+    "mtime": 1792088482.99315,
+    "ast_hash": "b4a1d22c4e1e549423136d3f8e8091f8",
+    "semantic_hash": "b4a1d22c4e1e549423136d3f8e8091f8"
+  },
+  "engine/deja/pipeline.py": {
+    "mtime": 1792090895.6206903,
+    "ast_hash": "aea353fcba00ebbf7187aa6754ef234e",
+    "semantic_hash": "aea353fcba00ebbf7187aa6754ef234e"
+  },
+  "engine/deja/rank.py": {
+    "mtime": 1792063176.0,
+    "ast_hash": "1199d615db14d29fbf8925ad56b0e9a6",
+    "semantic_hash": "1199d615db14d29fbf8925ad56b0e9a6"
+  },
+  "engine/deja/registries.py": {
+    "mtime": 1792062729.0,
+    "ast_hash": "4e559251f067166d0ae78fba97005c7a",
+    "semantic_hash": "4e559251f067166d0ae78fba97005c7a"
+  },
+  "engine/deja/repocache.py": {
+    "mtime": 1792078638.0,
+    "ast_hash": "0de851a17ad8a1e16ef985dcc98a5683",
+    "semantic_hash": "0de851a17ad8a1e16ef985dcc98a5683"
+  },
+  "engine/deja/report_md.py": {
+    "mtime": 1792088459.3007584,
+    "ast_hash": "612954d3716e32a629dc349af9862243",
+    "semantic_hash": "612954d3716e32a629dc349af9862243"
+  },
+  "engine/deja/server.py": {
+    "mtime": 1792089194.5328932,
+    "ast_hash": "83a05581b89110519512d9b577f37faa",
+    "semantic_hash": "83a05581b89110519512d9b577f37faa"
+  },
+  "engine/deja/sources.py": {
+    "mtime": 1792061551.0,
+    "ast_hash": "6e9da795d07881b1eb6112e078fecaba",
+    "semantic_hash": "6e9da795d07881b1eb6112e078fecaba"
+  },
+  "engine/deja/store.py": {
+    "mtime": 1792069383.0,
+    "ast_hash": "7801bf54d93640d084b6c173c57edc69",
+    "semantic_hash": "7801bf54d93640d084b6c173c57edc69"
+  },
+  "engine/deja/verdict.py": {
+    "mtime": 1792062346.0,
+    "ast_hash": "423b25e6d1ed5a105bd27ddd19dda26c",
+    "semantic_hash": "423b25e6d1ed5a105bd27ddd19dda26c"
+  },
+  "giants": {
+    "mtime": 1792088459.3065524,
+    "ast_hash": "67f090bd7f5713ffff1ff1603da64cc2",
+    "semantic_hash": "67f090bd7f5713ffff1ff1603da64cc2"
+  },
+  "radar": {
+    "mtime": 1792088459.3096952,
+    "ast_hash": "9c498c2e41c400b8c767b0a28a55a227",
+    "semantic_hash": "9c498c2e41c400b8c767b0a28a55a227"
+  },
+  "SKILL.md": {
+    "mtime": 1792090953.930354,
+    "ast_hash": "b0f62cbc1057150cb21e72b75056147d",
+    "semantic_hash": "b0f62cbc1057150cb21e72b75056147d"
+  },
+  "engine/deja/page.html": {
+    "mtime": 1792090924.0010173,
+    "ast_hash": "1e6faaa88b3ea498c745257e2ad53d8e",
+    "semantic_hash": "1e6faaa88b3ea498c745257e2ad53d8e"
+  }
+}

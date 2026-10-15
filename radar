@@ -1,0 +1,3 @@
+#!/bin/sh
+# 旧名字，保留兼容：等同 giants
+exec "$(dirname "$0")/giants" "$@"

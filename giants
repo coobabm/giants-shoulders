@@ -1,0 +1,5 @@
+#!/bin/sh
+# 巨人的肩膀（技能版）入口：giants <status|scan|deep|page|auth|...>
+DIR="$(cd "$(dirname "$0")" && pwd)"
+export DEJA_CALLER_CWD="$PWD"
+cd "$DIR/engine" && exec python3 -m deja "$@"
