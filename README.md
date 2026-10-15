@@ -11,7 +11,7 @@
 ## 安装
 
 ```bash
-git clone https://github.com/kkkayye/giants-shoulders ~/.claude/skills/giants-shoulders
+git clone https://github.com/coobabm/giants-shoulders ~/.claude/skills/giants-shoulders
 ```
 
 依赖：Python 3.10+（只用标准库）、[`gh`](https://cli.github.com/)（已登录）、[`claude`](https://docs.claude.com/en/docs/claude-code) CLI。可选：AgentsView（会话来源，深挖 / 页面任务视图需要）、[graphify](https://github.com/safishamsi/graphify)（知识图谱聚类）。
