@@ -422,7 +422,7 @@ def run(gid, rid=None, full=False):
 
 ## 我说过的话
 {chr(10).join(lines) or '（上次之后没有新的话）'}"""
-        rec, c, m = ask(prompt, RECALL_SCHEMA, config.model("deep"), timeout=900, tools="WebSearch", budget=left(SPLIT["recall"]))
+        rec, c, m = ask(prompt, RECALL_SCHEMA, config.web_model("deep"), timeout=900, tools="WebSearch", budget=left(SPLIT["recall"]))
         cost += c
         data["models"]["deep"] = m
         data.update(project=rec["project"], goal=rec["project"], same_kind=rec["same_kind"])

@@ -988,8 +988,8 @@ async function fetchModels(force) {
   const note = t => { state.models.note = t; const el = document.querySelector("#s-models"); if (el) el.textContent = t; };
   note("正在拉取模型列表…");
   try {
-    const {models, base_url} = await api("/api/models");
-    state.models.list = models;
+    const {models, base_url, names, native} = await api("/api/models");
+    state.models.list = models; state.models.names = names || {}; state.models.native = native || {};
     note(`从 ${base_url ? base_url.replace(/^https?:\/\//, "") : "Anthropic 官方"} 拉到 ${models.length} 个模型`);
   } catch (e) { note("没拉到模型列表：" + e.message); }
 }
@@ -997,13 +997,14 @@ async function fetchModels(force) {
 function comboOptions(q) {
   const all = [...MODEL_HINTS.map(m => ({m, alias: true})), ...state.models.list.filter(m => !MODEL_HINTS.includes(m)).map(m => ({m}))];
   const words = q.toLowerCase().split(/\s+/).filter(Boolean);
-  return all.filter(x => words.every(w => x.m.toLowerCase().includes(w)));
+  const nm = state.models.names || {};
+  return all.filter(x => words.every(w => (x.m + " " + (nm[x.m] || "")).toLowerCase().includes(w)));
 }
 
 function showCombo(input, filter) {
   const list = input.nextElementSibling;
   const opts = comboOptions(filter ? input.value : "");
-  list.innerHTML = (opts.length ? opts.map((x, i) => `<div class="opt ${x.m === input.value ? "cur" : ""}" data-pick="${esc(x.m)}">${esc(x.m)}${x.alias ? `<small>别名</small>` : ""}</div>`).join("")
+  list.innerHTML = (opts.length ? opts.map((x, i) => `<div class="opt ${x.m === input.value ? "cur" : ""}" data-pick="${esc(x.m)}">${(state.models.names || {})[x.m] ? `<b>${esc(state.models.names[x.m])}</b> <small>${esc(x.m)} · 经中转</small>` : esc(x.m)}${x.alias ? `<small>别名</small>` : ""}</div>`).join("")
     : `<div class="none">没有匹配的模型，直接用你输入的「${esc(input.value)}」</div>`)
     + `<div class="cnt">${state.models.list.length ? `共 ${state.models.list.length} 个模型，打字搜索` : "只有别名；填好 API key 后会拉取完整列表"}</div>`;
   list.hidden = false;
@@ -1056,10 +1057,11 @@ function renderSettings(s) {
       <input type="text" id="s-budget" value="${esc(s.deep_budget)}" inputmode="decimal">
       <div class="note">分给"想 / 读代码 / 挑选"三步，超了就停。用订阅时是折算值，同样会挡住特别费额度的深挖。</div>
       <label class="f">模型</label>
-      <div class="mgrid">${Object.entries(s.stages).map(([k, v]) => `<span>${esc(v.label)}<small>${k} · 默认 ${esc(v.default)}</small></span>
+      <div class="mgrid">${Object.entries(s.stages).map(([k, v]) => `<span>${esc(v.label)}<small>${k} · 默认 ${esc(v.default)}${v.web ? ` · 要搜网` : ""}</small></span>
         <div class="combo"><input type="text" data-stage="${k}" value="${esc(s.models[k])}" placeholder="${esc(v.default)}" autocomplete="off" spellcheck="false">
           <div class="combo-list" hidden></div></div>`).join("")}</div>
-      <div class="note">点输入框会弹出模型列表，打字就能搜；也可以直接填任意模型 ID。
+      <div class="note">点输入框会弹出模型列表，打字就能搜（GPT 等中转模型按真名显示，搜 "gpt" 即可）；也可以直接填任意模型 ID。
+        非 Claude 模型一律走 API key + Base URL（订阅跑不了）；标"要搜网"的环节选了非 Claude 模型时，搜网那一步自动用默认 Claude 模型（WebSearch 只在 Claude 上生效）。中转模型的花费是按 Claude 价格估的，以中转站账单为准。
         <button class="btn sm" data-set="models">重新拉取模型列表</button></div>
       <div class="note" id="s-models">${state.models.note || ""}</div>
     </div>

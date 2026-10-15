@@ -278,7 +278,7 @@ def process(rid, msg, manual=False):
         with ThreadPoolExecutor(max_workers=4) as ex:
             gh_job = ex.submit(github.scan, kw["keywords"], kw["topics"], gh_log)
             reg_job = ex.submit(registries.search_all, selected, kw["keywords"], kw["core"])
-            web_job = ex.submit(ask, _web_prompt(summary, kw), WEB_SCHEMA, config.model("web"), 300, "WebSearch")
+            web_job = ex.submit(ask, _web_prompt(summary, kw), WEB_SCHEMA, config.web_model("web"), 300, "WebSearch")
             deps_job = ex.submit(context.project_deps, msg.get("cwd", ""))
             sources = {}
             try:

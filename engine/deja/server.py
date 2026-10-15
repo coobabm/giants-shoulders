@@ -42,7 +42,7 @@ def alive():
 def settings():
     return {**auth.info(), "modes": list(auth.MODES), "deep_budget": config.setting("deep_budget"),
             "models": {k: config.model(k) for k in config.MODEL_STAGES},
-            "stages": {k: {"default": d, "label": label} for k, (d, label) in config.MODEL_STAGES.items()}}
+            "stages": {k: {"default": d, "label": label, "web": config.WEB_STAGES.get(k)} for k, (d, label) in config.MODEL_STAGES.items()}}
 
 
 def launch(rid, idx, root, prompt):
@@ -156,7 +156,10 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, {"prompt": deep.todo_prompt(rid, idx), "root": g.get("root") or d.get("root") or ""})
         if u.path == "/api/models":
             try:
-                return self._send(200, {"models": auth.list_models(), "base_url": auth.base_url()})
+                ms = auth.list_models()
+                return self._send(200, {"models": ms, "base_url": auth.base_url(),
+                                        "names": {m: auth.display_name(m) for m in ms if auth.display_name(m) != m},
+                                        "native": {m: config.native(m) for m in ms}})
             except Exception as e:
                 return self._send(400, {"error": str(e)[:300]})
         if u.path == "/api/report":

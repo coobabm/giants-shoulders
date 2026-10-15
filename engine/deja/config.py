@@ -1,5 +1,6 @@
 """全局配置。都可以用环境变量覆盖。"""
 import json
+import re
 import os
 from pathlib import Path
 
@@ -40,7 +41,20 @@ MODEL_STAGES = {
     "group": ("sonnet", "把会话归成任务"),
     "deep": ("opus", "深挖：按项目的问题找参考"),
 }
+WEB_STAGES = {"web": "全网侦察", "deep": "深挖的点名那一步"}   # 要用 WebSearch 的环节
 MODELS_FILE = DATA_DIR / "models.json"
+_NATIVE = re.compile(r"(haiku|sonnet|opus|fable|best|default)(\[1m\])?|claude-(\d[\d.-]*-)?(haiku|sonnet|opus|fable)(-\d+(\.\d+)?)*(-\d{8})?(\[1m\])?")
+
+
+def native(m):
+    """Anthropic 自家的模型（订阅能用、WebSearch 能用）。中转站转发的 GPT 之类返回 False。"""
+    return bool(_NATIVE.fullmatch((m or "").strip().lower()))
+
+
+def web_model(stage):
+    """要搜网的环节：选的是非 Claude 模型时退回这个环节的默认 Claude 模型（WebSearch 是 Anthropic 服务端工具，转给别家模型会静默失效）。"""
+    m = model(stage)
+    return m if native(m) else MODEL_STAGES[stage][0]
 
 
 def model(stage):

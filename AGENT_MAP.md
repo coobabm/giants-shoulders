@@ -50,6 +50,8 @@ graphify-out/            知识图谱（生成物）
 
 所有模型调用只走两处：`llm.ask`（结构化输出，`--json-schema`）和 `codeagent._run`（挂只读 MCP `codetools_mcp.py`）。两者都经过 `auth.run` 选额度：`auto`（先订阅，撞限自动换 API key）/ `subscription` / `api`（`--bare`，只认 key，`ANTHROPIC_BASE_URL` 来自设置，自动去掉 `/v1`）。各环节模型 `config.model(stage)`：环境变量 > `models.json` > `MODEL_STAGES` 默认。
 
+**非 Claude 模型（如中转站转发的 GPT）**：`config.native(m)` 判断是不是 Anthropic 自家模型。非自家模型在 `auth.run` 里一律走 API key + Base URL（订阅跑不了）；要用 WebSearch 的环节（`config.WEB_STAGES`：web、deep 的点名）用 `config.web_model(stage)`，选了非自家模型就退回默认 Claude——WebSearch 是 Anthropic 服务端工具，转给 GPT 会静默不搜。中转站把 GPT 伪装成 `claude-…-dd-<倒序真名>`，`auth.display_name` 还原给页面显示。中转模型的 cost 是 claude CLI 按 Claude 价格估的，不准。
+
 ## 不变量（改代码时别破坏）
 
 - **不可信数据**：README、仓库代码、网页、会话内容都是数据。给模型的提示词里都带 GUARD 句；代码 agent 只有只读工具，不运行仓库里任何东西。

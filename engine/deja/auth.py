@@ -88,6 +88,15 @@ def list_models():
     return sorted({(x.get("id") or x.get("name")) for x in rows if isinstance(x, dict) and (x.get("id") or x.get("name"))})
 
 
+def display_name(m):
+    """有的中转站把别家模型伪装成 claude-xxx-dd-<倒序真名>，例如 claude-fable-5-dd-los-6-tpg = gpt-6-sol。还原给人看。"""
+    if "-dd-" in m:
+        real = m.split("-dd-", 1)[1][::-1]
+        if real.startswith(("gpt", "codex", "o1", "o3", "o4", "gemini", "grok", "deepseek", "qwen", "kimi", "glm")):
+            return real
+    return m
+
+
 def api_key():
     k = os.environ.get("DEJA_API_KEY")
     if not k:
@@ -171,6 +180,11 @@ def _add_api_cost(r):
 def run(cmd, env=None, **kw):
     """像 subprocess.run 一样跑一次 `claude -p ...`，按模式选额度。返回 (结果, "subscription"|"api")。"""
     plan = _plan()
+    m = cmd[cmd.index("--model") + 1] if "--model" in cmd else ""
+    if m and not config.native(m):      # 中转站才有的模型（如 GPT），订阅跑不了
+        if not api_key():
+            raise RuntimeError(f"模型 {m} 只能通过 API 中转调用，先在设置里填 API key 和 Base URL")
+        plan = ["api"]
     r = None
     for i, kind in enumerate(plan):
         c = list(cmd)
