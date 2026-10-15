@@ -976,6 +976,7 @@ async function openSettings() {
   dlg.showModal();
   try {
     const s = await api("/api/settings");
+    state.models.names = {...(state.models.names || {}), ...(s.model_names || {})};
     renderSettings(s);
     if (s.key_set) fetchModels(false);
   }
@@ -989,10 +990,16 @@ async function fetchModels(force) {
   note("正在拉取模型列表…");
   try {
     const {models, base_url, names, native} = await api("/api/models");
-    state.models.list = models; state.models.names = names || {}; state.models.native = native || {};
+    state.models.list = models; state.models.names = {...(state.models.names || {}), ...(names || {})}; state.models.native = native || {};
+    for (const [raw, n] of Object.entries(state.models.names)) (state.models.rev ||= {})[n] = raw;
+    document.querySelectorAll("[data-stage]").forEach(i => { i.value = shownModel(rawModel(i.value.trim())); });
     note(`从 ${base_url ? base_url.replace(/^https?:\/\//, "") : "Anthropic 官方"} 拉到 ${models.length} 个模型`);
   } catch (e) { note("没拉到模型列表：" + e.message); }
 }
+
+/* 中转模型在输入框里显示真名（gpt-6.1-sol），保存时换回中转站的 ID */
+function shownModel(raw) { const n = (state.models.names || {})[raw]; if (n) (state.models.rev ||= {})[n] = raw; return n || raw; }
+function rawModel(v) { return (state.models.rev || {})[v] || v; }
 
 function comboOptions(q) {
   const all = [...MODEL_HINTS.map(m => ({m, alias: true})), ...state.models.list.filter(m => !MODEL_HINTS.includes(m)).map(m => ({m}))];
@@ -1021,7 +1028,7 @@ document.addEventListener("mousedown", e => {
   if (!o) return;
   e.preventDefault();
   const input = o.closest(".combo").querySelector("input");
-  input.value = o.dataset.pick; input.nextElementSibling.hidden = true;
+  input.value = shownModel(o.dataset.pick); input.nextElementSibling.hidden = true;
 });
 document.addEventListener("keydown", e => {
   const input = e.target;
@@ -1034,7 +1041,7 @@ document.addEventListener("keydown", e => {
     opts.forEach((o, i) => o.classList.toggle("on", i === state.models.active));
     opts[state.models.active].scrollIntoView({block: "nearest"});
   } else if (e.key === "Enter" && state.models.active >= 0) {
-    e.preventDefault(); input.value = opts[state.models.active].dataset.pick; list.hidden = true;
+    e.preventDefault(); input.value = shownModel(opts[state.models.active].dataset.pick); list.hidden = true;
   } else if (e.key === "Escape") { e.stopPropagation(); e.preventDefault(); list.hidden = true; }
 });
 
@@ -1058,7 +1065,7 @@ function renderSettings(s) {
       <div class="note">分给"想 / 读代码 / 挑选"三步，超了就停。用订阅时是折算值，同样会挡住特别费额度的深挖。</div>
       <label class="f">模型</label>
       <div class="mgrid">${Object.entries(s.stages).map(([k, v]) => `<span>${esc(v.label)}<small>${k} · 默认 ${esc(v.default)}${v.web ? ` · 要搜网` : ""}</small></span>
-        <div class="combo"><input type="text" data-stage="${k}" value="${esc(s.models[k])}" placeholder="${esc(v.default)}" autocomplete="off" spellcheck="false">
+        <div class="combo"><input type="text" data-stage="${k}" value="${esc(shownModel(s.models[k]))}" placeholder="${esc(v.default)}" autocomplete="off" spellcheck="false">
           <div class="combo-list" hidden></div></div>`).join("")}</div>
       <div class="note">点输入框会弹出模型列表，打字就能搜（GPT 等中转模型按真名显示，搜 "gpt" 即可）；也可以直接填任意模型 ID。
         非 Claude 模型一律走 API key + Base URL（订阅跑不了）；标"要搜网"的环节选了非 Claude 模型时，搜网那一步自动用默认 Claude 模型（WebSearch 只在 Claude 上生效）。中转模型的花费是按 Claude 价格估的，以中转站账单为准。
@@ -1075,7 +1082,7 @@ function collectSettings() {
     base_url: dlg.querySelector("#s-base").value, deep_budget: dlg.querySelector("#s-budget").value, models: {}};
   const key = dlg.querySelector("#s-key").value.trim();
   if (key) body.api_key = key;
-  dlg.querySelectorAll("[data-stage]").forEach(i => { body.models[i.dataset.stage] = i.value.trim(); });
+  dlg.querySelectorAll("[data-stage]").forEach(i => { body.models[i.dataset.stage] = rawModel(i.value.trim()); });
   return body;
 }
 

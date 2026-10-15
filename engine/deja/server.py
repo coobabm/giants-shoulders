@@ -42,6 +42,7 @@ def alive():
 def settings():
     return {**auth.info(), "modes": list(auth.MODES), "deep_budget": config.setting("deep_budget"),
             "models": {k: config.model(k) for k in config.MODEL_STAGES},
+            "model_names": {m: auth.display_name(m) for m in map(config.model, config.MODEL_STAGES) if auth.display_name(m) != m},
             "stages": {k: {"default": d, "label": label, "web": config.WEB_STAGES.get(k)} for k, (d, label) in config.MODEL_STAGES.items()}}
 
 
