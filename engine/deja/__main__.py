@@ -271,6 +271,16 @@ def cmd_deep(a):
     print(report_md.to_md(r, for_model=True))
 
 
+def cmd_advise(a):
+    from . import advise
+    if a.max is not None:
+        config.save_settings(auto_deep_max=a.max)
+        print(f"自动深挖上限改为 ${a.max}", file=sys.stderr)
+        if not a.cwd:
+            return
+    print(advise.advise(_caller_path(os.path.expanduser(a.cwd or ".")), run=True if a.run else (False if a.free else None)))
+
+
 def cmd_kg(a):
     from . import kg
     if a.action == "build" or not (kg.KG / "graph.json").exists():
@@ -332,6 +342,12 @@ def main():
     dp = sub.add_parser("deep", help="深挖一个任务：读懂它卡在哪，按问题找可借鉴的项目")
     dp.add_argument("task", help="任务 id（页面里的 g1、g2…）")
     dp.set_defaults(fn=cmd_deep)
+    av = sub.add_parser("advise", help="这个项目还有什么可优化：按当前目录找任务，先给免费结果，报告过期且报价在自动上限内才深挖")
+    av.add_argument("--cwd", help="项目目录（默认当前目录）")
+    av.add_argument("--run", action="store_true", help="用户已同意：报告过期就跑深挖，不管报价")
+    av.add_argument("--free", action="store_true", help="只看已有结果，不花钱")
+    av.add_argument("--max", type=float, help="设置自动深挖上限（美元），保存到设置")
+    av.set_defaults(fn=cmd_advise)
     kp = sub.add_parser("kg", help="项目知识图谱：查到过的 GitHub 项目之间、和你的任务 / 卡点之间的关系（给 agent 读）")
     kp.add_argument("action", choices=["build", "show", "query", "path"])
     kp.add_argument("args", nargs="*", help="show/query：仓库名、任务名或关键词；path：两个节点")

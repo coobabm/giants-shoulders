@@ -46,6 +46,9 @@ graphify-out/            知识图谱（生成物）
 `collect` 读所有 done 报告 + `group.load()` 的任务归属，建 repo / task / need / problem / part / field / topic 节点和关系 → `enrich` 用 `gh api` 补 topics、fork、README 互链（缓存 `kg/github_cache.json` 7 天）→ graphify 的 Python 聚类（没装就按连通块）→ 写 `~/.deja-repo/kg/`：`index.md`、`repos/*.md`、`tasks/*.md`、`graph.json`、`graph.html`。不调模型。注意：graphify 会改写节点 id，用节点属性 `kgid` 映射回来。
 这跟 `graphify-out/`（技能自身的代码图谱）是两回事。
 
+**5. 后台搜索 agent** `agents/giants-shoulders.md`（软链到 `~/.claude/agents/`）→ `giants advise --cwd` → `advise.advise`
+`find_task`：目录 → 任务（已保存 root > 会话 cwd > 会话里提到的路径，推断出的 root 会存下）→ `deep.plan` 看新话条数和报价 → 新话 < 3 条用旧报告；否则报价 ≤ `auto_deep_max` 自动 `deep.run`，超了只报价 → 附上 `kg/tasks/<gid>.md`。
+
 ## 模型调用
 
 所有模型调用只走两处：`llm.ask`（结构化输出，`--json-schema`）和 `codeagent._run`（挂只读 MCP `codetools_mcp.py`）。两者都经过 `auth.run` 选额度：`auto`（先订阅，撞限自动换 API key）/ `subscription` / `api`（`--bare`，只认 key，`ANTHROPIC_BASE_URL` 来自设置，自动去掉 `/v1`）。各环节模型 `config.model(stage)`：环境变量 > `models.json` > `MODEL_STAGES` 默认。

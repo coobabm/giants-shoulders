@@ -76,7 +76,8 @@ def save_models(models):
 
 # 其他页面设置（settings.json）
 SETTINGS_FILE = DATA_DIR / "settings.json"
-SETTING_DEFAULTS = {"deep_budget": 2.0}    # 每次深挖的花费上限（美元，订阅下是折算值）
+SETTING_DEFAULTS = {"deep_budget": 2.0,     # 每次深挖的花费上限（美元，订阅下是折算值）
+                    "auto_deep_max": 1.0}   # 后台 agent（giants advise）报价不超过这个数就自动深挖，超了要用户同意
 
 
 def setting(key):
